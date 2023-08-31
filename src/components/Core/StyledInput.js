@@ -1,15 +1,17 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { RightColumnContext } from '../App';
+import { RightColumnContext } from '../../App';
+
 /**
  * reusable input component that updates
  */
 const StyledInput = () => {
   const [value, setValue] = useState('');
-  const { tableData, setTableData } = useContext(RightColumnContext);
+  const { setTableData } = useContext(RightColumnContext);
 
   const handleOnChange = useCallback((e) => {
     setValue(e.target.value);
   }, []);
+
   useEffect(() => {
     setTableData((prevTableData) => ({
       ...prevTableData,

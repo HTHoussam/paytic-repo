@@ -1,22 +1,24 @@
 import React from 'react';
+import { useDrop } from 'react-dnd';
+import { ItemTypes } from '../utils/constants';
 
 function Board(props) {
-  const drop = (e) => {
-    e.preventDefault();
-    const card_id = e.dataTransfer.getData('card_id');
-
-    const card = document.getElementById(card_id);
-    card.style.display = 'block';
-    console.log('e.target', e.target);
-    e.target.appendChild(card);
-  };
-
-  const dragOver = (e) => {
-    e.preventDefault();
-  };
+  const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    accept: ItemTypes.CARD,
+    options: {
+      dropEffect: 'copy',
+    },
+    drop: (item) => {
+      return props.onCardDrop(item.id, props.sourceColumn);
+    },
+    collect: (monitor) => ({
+      canDrop: monitor.canDrop(),
+      isOver: monitor.isOver(),
+    }),
+  }));
 
   return (
-    <div id={props.id} className={props.className} onDrop={drop} onDragOver={dragOver}>
+    <div id={props.id} className={props.className} ref={drop}>
       {props.children}
     </div>
   );

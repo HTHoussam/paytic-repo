@@ -1,25 +1,23 @@
 import React from 'react';
-
+import { useDrag } from 'react-dnd';
+import { ItemTypes } from '../utils/constants';
 function Card(props) {
-  const dragStart = (e) => {
-    const target = e.target;
-    e.dataTransfer.setData('card_id', target.id);
-    setTimeout(() => {
-      target.style.display = 'none';
-    }, 0);
-  };
-
-  const dragOver = (e) => {
-    e.stopPropagation();
-  };
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.CARD,
+    item: { id: props.id },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 
   return (
     <div
       id={props.id}
+      ref={drag}
       className={props.className}
-      draggable={props.draggable}
-      onDragStart={dragStart}
-      onDragOver={dragOver}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+      }}
     >
       {props.children}
     </div>

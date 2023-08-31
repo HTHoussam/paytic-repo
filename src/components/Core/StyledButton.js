@@ -10,7 +10,7 @@ const StyledButton = ({ setDisplayTable, displayTable }) => {
     setDisplayTable(!displayTable);
   }, [displayTable]);
   return (
-    <button onClick={handleClick} class='primaryBTN'>
+    <button onClick={handleClick} className='primaryBTN'>
       Show table
     </button>
   );

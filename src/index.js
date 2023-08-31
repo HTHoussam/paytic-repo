@@ -1,4 +1,6 @@
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -11,7 +13,9 @@ const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <DndProvider backend={HTML5Backend}>
+        <App />
+      </DndProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 );
