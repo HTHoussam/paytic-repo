@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { ItemTypes } from '../utils/constants';
-function Card(props) {
+
+interface CardProps {
+  id: string;
+  className: string;
+  children: React.ReactNode;
+}
+
+const Card: FC<CardProps> = ({ id, children, className }: CardProps) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.CARD,
-    item: { id: props.id },
+    item: { id: id },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -12,16 +19,16 @@ function Card(props) {
 
   return (
     <div
-      id={props.id}
+      id={id}
       ref={drag}
-      className={props.className}
+      className={className}
       style={{
         opacity: isDragging ? 0.5 : 1,
       }}
     >
-      {props.children}
+      {children}
     </div>
   );
-}
+};
 
 export default Card;

@@ -1,14 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { RightColumnContext } from '../../App';
 
-const StyledRadioButton = () => {
+const StyledRadioButton: FC = () => {
   const [checked, setChecked] = useState(false);
 
   const { setTableData } = useContext(RightColumnContext);
 
   const handleChange = useCallback(() => {
-    setChecked(!checked);
-  }, [checked]);
+    setChecked((prevChecked) => !prevChecked);
+  }, []);
 
   useEffect(() => {
     setTableData((prevTableData) => ({
@@ -16,6 +16,7 @@ const StyledRadioButton = () => {
       isChecked: checked,
     }));
   }, [checked, setTableData]);
+
   return (
     <div className='flex items-center mx-auto w-fit'>
       <input
@@ -34,4 +35,5 @@ const StyledRadioButton = () => {
     </div>
   );
 };
+
 export default StyledRadioButton;

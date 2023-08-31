@@ -1,23 +1,21 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { RightColumnContext } from '../../App';
 
-/**
- * reusable input component that updates
- */
-const StyledInput = () => {
-  const [value, setValue] = useState('');
+const StyledInput: FC = () => {
+  const [value, setValue] = useState<string>('');
   const { setTableData } = useContext(RightColumnContext);
 
-  const handleOnChange = useCallback((e) => {
+  const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   }, []);
 
   useEffect(() => {
-    setTableData((prevTableData) => ({
+    setTableData((prevTableData: any) => ({
       ...prevTableData,
       inputValue: value,
     }));
   }, [value, setTableData]);
+
   return (
     <div>
       <input
@@ -30,4 +28,5 @@ const StyledInput = () => {
     </div>
   );
 };
+
 export default StyledInput;

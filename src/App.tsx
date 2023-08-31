@@ -11,13 +11,25 @@ import StyledCard from './components/Core/StyledCard';
 import StyledCheckbox from './components/Core/StyledCheckbox';
 import StyledDropdown from './components/Core/StyledDropDown';
 import StyledInput from './components/Core/StyledInput';
+import { CardData, GlobalContext, TableData } from './entities/types';
 
-export const RightColumnContext = createContext('');
+export const RightColumnContext = createContext<GlobalContext>({
+  setTableData: () => {},
+  tableData: {
+    inputValue: '',
+    isChecked: false,
+    selectedValue: '',
+  },
+});
 
 function App() {
-  const [tableData, setTableData] = useState({});
+  const [tableData, setTableData] = useState<TableData>({
+    inputValue: '',
+    isChecked: false,
+    selectedValue: '',
+  });
   const [displayTable, setDisplayTable] = useState(false);
-  const [leftColumn, setLeftColumn] = useState([
+  const [leftColumn, setLeftColumn] = useState<CardData[]>([
     {
       id: 'card-1',
       text: 'Write a cool JS library',
@@ -44,10 +56,10 @@ function App() {
     },
   ]);
 
-  const [rightColumn, setRightColumn] = useState([]);
+  const [rightColumn, setRightColumn] = useState<CardData[]>([]);
 
   const handleCardDropFromLeft = useCallback(
-    (cardId) => {
+    (cardId: string) => {
       const cardToMove = leftColumn.find((card) => card.id === cardId);
       if (cardToMove) {
         setLeftColumn((prev) => prev.filter((card) => card.id !== cardId));
@@ -56,10 +68,10 @@ function App() {
     },
     [leftColumn],
   );
+
   const handleCardDropFromRight = useCallback(
-    (cardId) => {
+    (cardId: string) => {
       const cardToMove = rightColumn.find((card) => card.id === cardId);
-      console.log('cardToMove', cardToMove);
       if (cardToMove) {
         setRightColumn((prev) => prev.filter((card) => card.id !== cardId));
         setLeftColumn((prev) => [...prev, cardToMove]);
@@ -68,7 +80,6 @@ function App() {
     [rightColumn],
   );
 
-  console.log('RightColumnContext', rightColumn);
   return (
     <RightColumnContext.Provider value={{ tableData, setTableData }}>
       <div className='App'>
@@ -86,12 +97,11 @@ function App() {
                 </center>
                 <br />
                 {leftColumn.map((c) => (
-                  <Card key={c.id} id={c.id}>
+                  <Card key={c.id} id={c.id} className={''}>
                     <StyledCard
                       header={c.header}
                       title={c.title}
                       content={c.content}
-                      id={c.id}
                       input={c.input}
                     />
                   </Card>
@@ -104,23 +114,17 @@ function App() {
                 sourceColumn={'left'}
                 className='board'
                 onCardDrop={handleCardDropFromLeft}
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  const cardId = e.dataTransfer.getData('text/plain');
-                  handleCardDropFromRight(cardId);
-                }}
               >
                 <center>
                   <h3>Board 2</h3>
                 </center>
                 <br />
                 {rightColumn.map((c) => (
-                  <Card key={c.id} id={c.id}>
+                  <Card key={c.id} id={c.id} className={''}>
                     <StyledCard
                       header={c.header}
                       title={c.title}
                       content={c.content}
-                      id={c.id}
                       input={c.input}
                     />
                   </Card>
