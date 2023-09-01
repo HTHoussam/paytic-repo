@@ -17,6 +17,7 @@ function Board({ id, children, className, onCardDrop }: BoardProps) {
       dropEffect: 'copy',
     },
     drop: (item: { id: string }) => {
+      console.log('ITEAM', item);
       return onCardDrop(item.id);
     },
     collect: (monitor: DropTargetMonitor) => ({

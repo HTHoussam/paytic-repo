@@ -14,6 +14,9 @@ export interface TableData {
 }
 
 export interface GlobalContext {
+  editMode: boolean;
+  isDisplayData: boolean;
+  setIsDisplayData: React.Dispatch<React.SetStateAction<boolean>>;
   tableData: TableData;
   setTableData: React.Dispatch<React.SetStateAction<TableData>>;
 }

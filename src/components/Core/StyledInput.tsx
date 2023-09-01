@@ -3,7 +3,7 @@ import { RightColumnContext } from '../../App';
 
 const StyledInput: FC = () => {
   const [value, setValue] = useState<string>('');
-  const { setTableData } = useContext(RightColumnContext);
+  const { setTableData, editMode, isDisplayData } = useContext(RightColumnContext);
 
   const handleOnChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -14,12 +14,13 @@ const StyledInput: FC = () => {
       ...prevTableData,
       inputValue: value,
     }));
-  }, [value, setTableData]);
+  }, [editMode, setTableData, isDisplayData]);
 
   return (
     <div>
       <input
         type='text'
+        disabled={!editMode}
         name='firstText'
         className='border-2 border-black rounded-md p-2 m-2 text-black w-72'
         placeholder='Enter your name'

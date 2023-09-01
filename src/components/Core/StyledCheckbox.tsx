@@ -4,7 +4,7 @@ import { RightColumnContext } from '../../App';
 const StyledRadioButton: FC = () => {
   const [checked, setChecked] = useState(false);
 
-  const { setTableData } = useContext(RightColumnContext);
+  const { setTableData, editMode, isDisplayData } = useContext(RightColumnContext);
 
   const handleChange = useCallback(() => {
     setChecked((prevChecked) => !prevChecked);
@@ -15,12 +15,13 @@ const StyledRadioButton: FC = () => {
       ...prevTableData,
       isChecked: checked,
     }));
-  }, [checked, setTableData]);
+  }, [editMode, setTableData, isDisplayData]);
 
   return (
     <div className='flex items-center mx-auto w-fit'>
       <input
         type='checkbox'
+        disabled={!editMode}
         checked={checked}
         onChange={handleChange}
         id='myCheckbox'

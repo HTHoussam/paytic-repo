@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
@@ -7,6 +7,7 @@ import Card from './components/Card';
 import StyledButton from './components/Core/StyledButton';
 import DataTable from './components/DataTable';
 
+import HelperToolTip from './components/Core/HelperToolTip';
 import StyledCard from './components/Core/StyledCard';
 import StyledCheckbox from './components/Core/StyledCheckbox';
 import StyledDropdown from './components/Core/StyledDropDown';
@@ -14,6 +15,9 @@ import StyledInput from './components/Core/StyledInput';
 import { CardData, GlobalContext, TableData } from './entities/types';
 
 export const RightColumnContext = createContext<GlobalContext>({
+  isDisplayData: false,
+  editMode: false,
+  setIsDisplayData: () => {},
   setTableData: () => {},
   tableData: {
     inputValue: '',
@@ -28,7 +32,9 @@ function App() {
     isChecked: false,
     selectedValue: '',
   });
-  const [displayTable, setDisplayTable] = useState(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [isDisplayData, setIsDisplayData] = useState<boolean>(false);
+
   const [leftColumn, setLeftColumn] = useState<CardData[]>([
     {
       id: 'card-1',
@@ -71,7 +77,7 @@ function App() {
 
   const handleCardDropFromRight = useCallback(
     (cardId: string) => {
-      const cardToMove = rightColumn.find((card) => card.id === cardId);
+      const cardToMove = leftColumn.find((card) => card.id === cardId);
       if (cardToMove) {
         setRightColumn((prev) => prev.filter((card) => card.id !== cardId));
         setLeftColumn((prev) => [...prev, cardToMove]);
@@ -79,13 +85,18 @@ function App() {
     },
     [rightColumn],
   );
-
+  useEffect(() => {
+    setEditMode(rightColumn.length === 3);
+  }, [rightColumn.length]);
   return (
-    <RightColumnContext.Provider value={{ tableData, setTableData }}>
+    <RightColumnContext.Provider
+      value={{ tableData, setTableData, isDisplayData, setIsDisplayData, editMode }}
+    >
       <div className='App'>
         <div className='bg-first backdrop-blur-sm h-screen mx-auto py-5 pt-32 px-2 text-white w-screen overflow-x-hidden'>
           <div className='flex flex-row gap-6'>
             <div className='w-1/2 bg-second shadow-sm min-h-max'>
+              <HelperToolTip />
               <Board
                 id='board-1'
                 sourceColumn={'right'}
@@ -129,11 +140,11 @@ function App() {
                     />
                   </Card>
                 ))}
-                <StyledButton setDisplayTable={setDisplayTable} displayTable={displayTable} />
+                <StyledButton />
               </Board>
             </div>
           </div>
-          <DataTable displayTable={displayTable} />
+          <DataTable />
         </div>
       </div>
       <ToastContainer position='bottom-right' />

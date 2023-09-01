@@ -1,23 +1,20 @@
-import React, { FC, useCallback } from 'react';
-
-interface StyledButtonProps {
-  setDisplayTable: React.Dispatch<React.SetStateAction<boolean>>;
-  displayTable: boolean;
-}
+import React, { FC, useCallback, useContext } from 'react';
+import { RightColumnContext } from '../../App';
 
 /**
  * reusable button component that toggles the display of the table
- * @param {StyledButtonProps} props
  * @returns {JSX.Element}
  */
-const StyledButton: FC<StyledButtonProps> = ({ setDisplayTable, displayTable }) => {
+const StyledButton: FC = () => {
+  const { setIsDisplayData, isDisplayData } = useContext(RightColumnContext);
+
   const handleClick = useCallback(() => {
-    setDisplayTable(!displayTable);
-  }, [setDisplayTable, displayTable]);
+    setIsDisplayData(!isDisplayData);
+  }, [isDisplayData, setIsDisplayData]);
 
   return (
     <button onClick={handleClick} className='primaryBTN'>
-      Show table data
+      refresh table data
     </button>
   );
 };

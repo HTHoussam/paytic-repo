@@ -2,36 +2,39 @@ import React, { FC, useCallback, useContext, useEffect, useState } from 'react';
 import { RightColumnContext } from '../../App';
 
 const StyledRadioButton: FC = () => {
-  const [checked, setChecked] = useState(false);
+  const [selectedOption, setSelectedOption] = useState('one');
 
-  const { setTableData } = useContext(RightColumnContext);
+  const simple = ['one', 'two', 'three', 'four', 'five'];
 
-  const handleChange = useCallback(() => {
-    setChecked((prevChecked) => !prevChecked);
+  const { setTableData, editMode, isDisplayData } = useContext(RightColumnContext);
+
+  const handleChangeSelect = useCallback((e: any) => {
+    setSelectedOption(e.target.value);
   }, []);
 
   useEffect(() => {
     setTableData((prevTableData) => ({
       ...prevTableData,
-      isChecked: checked,
+      selectedValue: selectedOption,
     }));
-  }, [checked, setTableData]);
+  }, [editMode, setTableData, isDisplayData]);
 
   return (
     <div className='flex items-center mx-auto w-fit'>
-      <input
-        type='checkbox'
-        checked={checked}
-        onChange={handleChange}
-        id='myCheckbox'
-        className='w-4 h-4 text-black bg-first border-second rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-      />
-      <label
-        htmlFor='myCheckbox'
-        className='ml-2 text-sm font-medium text-gray-900 dark:text-gray-300'
+      <select
+        onChange={handleChangeSelect}
+        value={selectedOption}
+        disabled={!editMode}
+        className='border-2 border-gray-400 rounded-md p-2 m-2 text-black w-72'
       >
-        Checked state
-      </label>
+        {simple.map((data) => {
+          return (
+            <option key={data} value={data}>
+              {data}
+            </option>
+          );
+        })}
+      </select>
     </div>
   );
 };

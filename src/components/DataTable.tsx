@@ -4,14 +4,11 @@ import { RightColumnContext } from '../App';
 import { GlobalContext } from '../entities/types';
 import { tableDataSchema } from '../utils/validationSchema';
 
-interface DataTableProps {
-  displayTable: boolean;
-}
 interface TableHeader {
   label: string;
   id: string;
 }
-const DataTable: React.FC<DataTableProps> = ({ displayTable }) => {
+const DataTable: React.FC = () => {
   const { tableData } = useContext<GlobalContext>(RightColumnContext);
 
   const tableHeaders: Array<TableHeader> = useMemo(
@@ -68,13 +65,13 @@ const DataTable: React.FC<DataTableProps> = ({ displayTable }) => {
                 <tr className='border-b dark:border-neutral-500'>
                   <td className='whitespace-nowrap px-6 py-4'>@</td>
                   <td className='whitespace-nowrap px-6 py-4 font-medium'>
-                    {displayTable && tableData.inputValue}
+                    {tableData.isChecked.toString()}
                   </td>
                   <td className='whitespace-nowrap px-6 py-4 font-medium'>
-                    {displayTable && tableData.isChecked.toString()}
+                    {tableData.inputValue}
                   </td>
                   <td className='whitespace-nowrap px-6 py-4 font-medium'>
-                    {displayTable && tableData.selectedValue}
+                    {tableData.selectedValue}
                   </td>
                 </tr>
               </tbody>
